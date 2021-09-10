@@ -1,0 +1,51 @@
+.Header {
+    background-color: hsla(0, 0%, 100%, 0.05);
+
+    ul {
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+    }
+
+    ul li {
+        padding: 7px 15px;
+        border-left: 2px solid grey;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:first-of-type {
+            border-left: none;
+        }
+    }
+
+    a {
+        font-size: 1.2rem;
+        text-decoration: none;
+        color: hsl(51, 98%, 55%);
+    }
+
+    .container {
+        max-width: 1500px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* .logo-container {
+        max-width: 40px;
+        max-height: 20px;
+    } */
+
+    .logo-container a {
+        display: block;
+        line-height: 0;
+    }
+
+    .logo-container a img {
+        width: 100px;
+    }
+}

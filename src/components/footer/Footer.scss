@@ -1,0 +1,15 @@
+.Footer {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    background-color: hsla(0, 0%, 100%, 0.05);
+
+    p {
+        margin: 1rem auto;
+        font-size: 0.8rem;
+    }
+}
