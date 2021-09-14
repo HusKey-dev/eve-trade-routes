@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import PriceResult from './priceResult/PriceResult';
+
 import './JitaPrice.scss';
 
 
 function JitaPrice() {
     const [userInput, setUserInput] = useState('');
     const [priceResponse, setPriceResponse] = useState(null);
+    const [isSearched, setIsSearched] = useState(false);
 
     const renderPriceResult = () => {
         if (priceResponse) {
@@ -33,10 +36,12 @@ function JitaPrice() {
         const bestBuy = orders[orders.length - 1];
         const sellOrders = orders.filter(order => !order.is_buy_order);
         const bestSell = sellOrders.length > 0 ? sellOrders[sellOrders.length - 1] : null;
+
         setPriceResponse({
             buy: bestBuy?.price,
             sell: bestSell?.price
         });
+        setIsSearched(true);
     }
 
     const fetchTypeId = async (userInput) => {
@@ -45,8 +50,9 @@ function JitaPrice() {
             console.log(resolve);
             const id = resolve.data.inventory_types?.[0].id;
             console.log(id);
-            fetchJitaPrice(id);
-            return id;
+            if (id) {
+                fetchJitaPrice(id);
+            } else setIsSearched(false);
 
 
         } catch (error) {
@@ -55,19 +61,34 @@ function JitaPrice() {
         }
     }
 
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
+        fetchTypeId(userInput);
+    }
+
     return (
         <div className="JitaPrice">
             <div className="container">
-                <label>Copypaste The Item Name Here:
-                    <input
-                        type="text"
-                        placeholder="Item Name"
-                        value={userInput}
-                        onChange={e => setUserInput(e.target.value)}>
-                    </input>
-                </label>
-                <button type='submit' onClick={() => fetchTypeId(userInput)}>Check The Price</button>
-                {renderPriceResult()}
+                <form onSubmit={(e) => onSubmitHandler(e)}>
+                    <label>Copypaste The Item Name Here:
+                        <input
+                            type="text"
+                            placeholder="Item Name"
+                            value={userInput}
+                            onChange={e => setUserInput(e.target.value)}>
+                        </input>
+                    </label>
+                    <button type='submit'>
+                        Check The Price
+                    </button>
+                    <PriceResult
+                        shouldRender={isSearched}
+                        orders={{
+                            buy: priceResponse?.buy,
+                            sell: priceResponse?.sell
+                        }}>
+                    </PriceResult>
+                </form>
             </div>
         </div>
     )

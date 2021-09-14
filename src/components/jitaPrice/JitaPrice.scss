@@ -19,7 +19,7 @@
 
         label {
             color: white;
-            max-width: 1300px;
+            width: 100%;
         }
 
         input {
@@ -27,6 +27,8 @@
             padding: 0.5rem 1rem;
             border: 1px solid black;
             border-radius: 4px;
+            width: 100%;
+            max-width: 1000px;
             
         }
     
@@ -39,8 +41,46 @@
             }
         }
 
-        .result {
-            color: white;
+        form {
+            position: relative;
+            overflow: visible;
+            width: 100%;
+
+            .result {
+                color: white;
+                position: absolute;
+                padding-top: 1rem;
+                width: 100%;
+
+                table {
+                    width: 100%;
+                    border-top: 3px solid hsl(50.9, 98.3%, 55.1%);
+
+                    caption {
+                        text-align: left;
+                        font-size: 1.3rem;
+                        padding-bottom: 3px;
+                    }
+
+                    tr {
+                        text-align: left;
+
+                        &.buy {
+                            color: green;
+                        }
+
+                        &.sell {
+                            color: red;
+                        }
+                    }
+
+                    td {
+                        width: 90%;
+                        text-align: end;
+                        padding: 5px 0; 
+                    }
+                }
+            }
         }
     }
 }
