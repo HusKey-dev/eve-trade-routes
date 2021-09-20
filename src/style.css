@@ -8,21 +8,29 @@
     padding: 0;
     font-family: zebulon;
     box-sizing: border-box;
-    overflow: hidden;
+    /* overflow: hidden; */
+    list-style: none;
 }
 
 body {
-    background: url('./images/background.jpg') no-repeat center center/cover;
-    min-height: 100vh;
+    /* min-height: 100vh; */
+    height: 100%;
+    color: blanchedalmond;
 }
 
 #root {
-    min-height: 100vh;
+    /* min-height: 100vh;
+    height: 1px; */
 }
 
 .appWrapper {
-    display: flex;
-    flex-direction: column;
+    background: url('./images/background.jpg') fixed no-repeat center center/cover;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
     min-height: 100vh;
-    height: 1px;
+}
+
+.container {
+    max-width: 1500px;
+    margin: 0 auto;
 }

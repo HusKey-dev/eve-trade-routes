@@ -1,9 +1,12 @@
 import React from 'react';
+import './Contacts.scss'
 
 function Contacts() {
     return (
-        <div>
-            Donate Me Some ISK
+        <div className="Contacts">
+            <div className="container">
+                Donate Me Some ISK
+            </div>
         </div>
     )
 };
