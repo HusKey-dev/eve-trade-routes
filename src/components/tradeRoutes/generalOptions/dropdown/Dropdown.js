@@ -12,19 +12,26 @@ function Dropdown() {
         }
 
         const renderItems = (array) => {
-            return array.map(system => <li key={system.id}>{system.name}</li>)
+            return array.map(system => <React.Fragment key={system.id}>
+                <label>
+                    <input type="checkbox" name={system.id}></input>
+                    {system.name}</label>
+            </React.Fragment>)
         }
 
         return (
             <div>
                 <div>
-                    <ul>{renderItems(empireRegions)}</ul>
+                    <p>Empire Regions</p>
+                    {renderItems(empireRegions)}
                 </div>
                 <div>
-                    <ul>{renderItems(outlawRegions)}</ul>
+                    <p>Outlaw Regions</p>
+                    {renderItems(outlawRegions)}
                 </div>
                 <div>
-                    <ul>{renderItems(hubs)}</ul>
+                    <p>Hubs</p>
+                    {renderItems(hubs)}
                 </div>
                 <label>Or Enter Scpecific System Name:
                     <input type="text" />
