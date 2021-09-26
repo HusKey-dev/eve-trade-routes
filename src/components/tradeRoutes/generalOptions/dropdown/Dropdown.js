@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { empireRegions, outlawRegions, hubs } from './regions.js';
+import './Dropdown.scss';
 
 function Dropdown() {
     const [isActive, setIsActive] = useState(false);
@@ -20,29 +21,31 @@ function Dropdown() {
         }
 
         return (
-            <div>
-                <div>
-                    <p>Empire Regions</p>
-                    {renderItems(empireRegions)}
+            <div className="Dropdown">
+                <div className="columnContainer">
+                    <div className="regionColumn">
+                        <p>Empire Regions</p>
+                        {renderItems(empireRegions)}
+                    </div>
+                    <div className="regionColumn">
+                        <p>Outlaw Regions</p>
+                        {renderItems(outlawRegions)}
+                    </div>
+                    <div className="regionColumn">
+                        <p>Hubs</p>
+                        {renderItems(hubs)}
+                    </div>
                 </div>
-                <div>
-                    <p>Outlaw Regions</p>
-                    {renderItems(outlawRegions)}
-                </div>
-                <div>
-                    <p>Hubs</p>
-                    {renderItems(hubs)}
-                </div>
-                <label>Or Enter Scpecific System Name:
+                <label className="specificSystem">Or Enter Scpecific System Name:
                     <input type="text" />
                 </label>
-            </div>
+            </div >
         )
     };
 
     return (
         <>
-            <button onClick={() => { setIsActive(!isActive) }}>{buttonContent}</button>
+            <button onClick={(e) => { e.preventDefault(); setIsActive(!isActive) }}>{buttonContent}</button>
             {renderList(isActive)}
         </>
     )

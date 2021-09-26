@@ -1,0 +1,27 @@
+.Dropdown {
+    border: 2px solid gold;
+    border-radius: 10px;
+    width: max-content;
+    padding: 1rem;
+    background: hsla(0, 0, 0, 0.4);
+
+    .columnContainer {
+        display: grid;
+        grid-template-columns: auto auto auto;
+
+        .regionColumn {
+            display: flex;
+            flex-direction: column;
+
+            p {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+
+    .specificSystem {
+        display: block;
+        margin-top: 1rem;
+    }
+}

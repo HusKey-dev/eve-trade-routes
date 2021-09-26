@@ -8,13 +8,22 @@ import ResultList from './resultList/ResultList';
 import './TradeRoutes.scss';
 
 function TradeRoutes() {
+
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
+        console.log('form submitted');
+    }
+
     return (
         <div className="TradeRoutes" >
             <div className="container">
-                <GeneralOptions />
-                <ShipOptions />
-                <CharacterOptions />
-                <ResultList />
+                <form onSubmit={e => onSubmitHandler(e)}>
+                    <GeneralOptions />
+                    <ShipOptions />
+                    <CharacterOptions />
+                    <button type="submit">Calculate Routes</button>
+                    <ResultList />
+                </form>
             </div>
         </div>
     )
