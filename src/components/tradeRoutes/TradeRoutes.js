@@ -1,32 +1,34 @@
-import React from 'react';
+import React, { useState, useRef } from "react";
 
-import GeneralOptions from './generalOptions/GeneralOptions';
-import ShipOptions from './shipOptions/ShipOptions';
-import CharacterOptions from './characterOptions/CharacterOptions';
-import ResultList from './resultList/ResultList';
+import GeneralOptions from "./generalOptions/GeneralOptions";
+import ShipOptions from "./shipOptions/ShipOptions";
+import CharacterOptions from "./characterOptions/CharacterOptions";
+import ResultList from "./resultList/ResultList";
 
-import './TradeRoutes.scss';
+import "./TradeRoutes.scss";
 
 function TradeRoutes() {
+    const formGeneralOptions = useRef();
 
-    const onSubmitHandler = (e) => {
+    const onClickHandler = (e) => {
         e.preventDefault();
-        console.log('form submitted');
-    }
+        formGeneralOptions.current.onSubmitHandler();
+        console.log(formGeneralOptions.current);
+    };
 
     return (
-        <div className="TradeRoutes" >
+        <div className="TradeRoutes">
             <div className="container">
-                <form onSubmit={e => onSubmitHandler(e)}>
-                    <GeneralOptions />
+                <div>
+                    <GeneralOptions ref={formGeneralOptions} />
                     <ShipOptions />
                     <CharacterOptions />
-                    <button type="submit">Calculate Routes</button>
-                    <ResultList />
-                </form>
+                    <button onClick={onClickHandler}>Calculate Routes</button>
+                </div>
+                <ResultList />
             </div>
         </div>
-    )
+    );
 }
 
 export default TradeRoutes;

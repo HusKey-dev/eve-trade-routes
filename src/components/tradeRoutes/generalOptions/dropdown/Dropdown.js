@@ -1,24 +1,93 @@
-import React, { useState } from 'react';
-import { empireRegions, outlawRegions, hubs } from './regions.js';
-import './Dropdown.scss';
+import React from "react";
+import { connect } from "react-redux";
 
-function Dropdown() {
-    const [isActive, setIsActive] = useState(false);
+import { saveOptions } from "../../../../actions";
+import { empireRegions, outlawRegions, hubs } from "./regions.js";
+import "./Dropdown.scss";
 
-    const buttonContent = isActive ? 'A' : 'V';
+class Dropdown extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isActive: false,
+            data: [],
+            system: "",
+        };
+    }
 
-    const renderList = (isActive) => {
-        if (!isActive) {
+    componentDidMount() {
+        this.setState(
+            JSON.parse(sessionStorage.getItem(`Dropdown ${this.props.id}`))
+        );
+    }
+
+    componentDidUpdate() {
+        this.props.saveOptions(
+            `${this.props.id.toUpperCase()}_OPTIONS`,
+            this.state
+        );
+    }
+
+    componentWillUnmount() {
+        console.log("unmount worked");
+        console.log(this.props.id, this.state);
+        sessionStorage.setItem(
+            `Dropdown ${this.props.id}`,
+            JSON.stringify(this.state)
+        );
+    }
+
+    up = () => {
+        return <i className="fas fa-chevron-up"></i>;
+    };
+
+    down = () => {
+        return <i className="fas fa-chevron-down"></i>;
+    };
+
+    buttonContent = () => {
+        return this.state.isActive ? this.up() : this.down();
+    };
+
+    renderList = () => {
+        if (!this.state.isActive) {
             return null;
         }
 
+        const onChangeHandler = (e) => {
+            console.log(e.target);
+            if (e.target.checked) {
+                this.setState({
+                    ...this.state,
+                    data: [...this.state.data, +e.target.name],
+                });
+            } else {
+                this.setState({
+                    ...this.state,
+                    data: this.state.data.filter(
+                        (regionId) => regionId !== +e.target.name
+                    ),
+                });
+            }
+        };
+        const onsystemChange = (e) => {
+            this.setState({ ...this.state, system: e.target.value });
+        };
         const renderItems = (array) => {
-            return array.map(system => <React.Fragment key={system.id}>
-                <label>
-                    <input type="checkbox" name={system.id}></input>
-                    {system.name}</label>
-            </React.Fragment>)
-        }
+            return array.map((system) => (
+                <React.Fragment key={system.id}>
+                    <label>
+                        <input
+                            type="checkbox"
+                            name={system.id}
+                            checked={this.state.data.includes(+system.id)}
+                            onChange={onChangeHandler}
+                        ></input>
+                        {` ${system.name}`}
+                    </label>
+                </React.Fragment>
+            ));
+        };
 
         return (
             <div className="Dropdown">
@@ -36,19 +105,37 @@ function Dropdown() {
                         {renderItems(hubs)}
                     </div>
                 </div>
-                <label className="specificSystem">Or Enter Scpecific System Name:
-                    <input type="text" />
+                <label className="specificSystem">
+                    Or Enter Scpecific System Name:
+                    <input
+                        type="text"
+                        value={this.state.system}
+                        onChange={onsystemChange}
+                    />
                 </label>
-            </div >
-        )
+            </div>
+        );
     };
 
-    return (
-        <>
-            <button onClick={(e) => { e.preventDefault(); setIsActive(!isActive) }}>{buttonContent}</button>
-            {renderList(isActive)}
-        </>
-    )
+    render() {
+        return (
+            <>
+                <div
+                    className={`button ${this.state.isActive ? "active" : ""}`}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        this.setState({
+                            ...this.state,
+                            isActive: !this.state.isActive,
+                        });
+                    }}
+                >
+                    {this.buttonContent()}
+                </div>
+                {this.renderList(this.state.isActive)}
+            </>
+        );
+    }
 }
 
-export default Dropdown;
+export default connect(null, { saveOptions })(Dropdown);
