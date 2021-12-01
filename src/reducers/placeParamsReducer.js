@@ -11,8 +11,19 @@ export default (state = INITIAL_STATE, action) => {
         case "ENDINGSELECT_OPTIONS":
             console.log(action.type);
             return { ...state, endingOptions: action.payload };
+        case "VALIDATE_GENERAL":
+            console.log("validate reducer worked");
+            return {
+                startingOptions: {
+                    ...state.startingOptions,
+                    ...action.payload.startingOptions,
+                },
+                endingOptions: {
+                    ...state.endingOptions,
+                    ...action.payload.endingOptions,
+                },
+            };
         default:
-            console.log("default action type=", action.type);
             return state;
     }
 };

@@ -1,26 +1,27 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Dropdown from "./dropdown/Dropdown";
+import { validateGeneralOptions } from "../../../actions";
 
 class GeneralOptions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            startPoint: null,
-            endPoint: null,
+            // startingOptions: this.props.startingOptions,
+            // endingOptions: this.props.endingOptions,
             maxRange: 999,
             maxCargo: 581250,
             maxWallet: 9999999999999,
             secFilter: 0,
+            isValid: null,
         };
     }
 
     componentDidMount() {
-        this.setState(JSON.parse(sessionStorage.getItem("GeneralOptions")));
-    }
-
-    componentDidUpdate() {
-        console.log(this.props);
+        console.log("mounted with state =", this.state);
+        if (sessionStorage.getItem("GeneralOptions")) {
+            this.setState(JSON.parse(sessionStorage.getItem("GeneralOptions")));
+        }
     }
 
     componentWillUnmount() {
@@ -29,7 +30,7 @@ class GeneralOptions extends Component {
 
     onSubmitHandler = (e) => {
         e?.preventDefault();
-        console.log("General Options submitted");
+        this.validateForm();
     };
 
     onChangeHandler = (e) => {
@@ -55,6 +56,10 @@ class GeneralOptions extends Component {
         ) {
             this.setState({ ...this.state, [e.target.id]: 581250 });
         }
+    };
+
+    validateForm = () => {
+        this.props.validateGeneralOptions();
     };
 
     render() {
@@ -113,12 +118,12 @@ class GeneralOptions extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        startingOptions: state.placeParams.startingOptions,
-        endingOptions: state.placeParams.endingOptions,
-    };
-};
-export default connect(mapStateToProps, null, null, { forwardRef: true })(
-    GeneralOptions
-);
+// const mapStateToProps = (state) => {
+//     return {
+//         startingOptions: state.placeParams.startingOptions,
+//         endingOptions: state.placeParams.endingOptions,
+//     };
+// };
+export default connect(null, { validateGeneralOptions }, null, {
+    forwardRef: true,
+})(GeneralOptions);

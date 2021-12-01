@@ -16,9 +16,11 @@ class Dropdown extends React.Component {
     }
 
     componentDidMount() {
-        this.setState(
-            JSON.parse(sessionStorage.getItem(`Dropdown ${this.props.id}`))
-        );
+        if (sessionStorage.getItem(`Dropdown ${this.props.id}`)) {
+            this.setState(
+                JSON.parse(sessionStorage.getItem(`Dropdown ${this.props.id}`))
+            );
+        }
     }
 
     componentDidUpdate() {

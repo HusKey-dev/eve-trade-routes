@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import { connect } from "react-redux";
+import { calculateRoutes } from "../../actions";
 
 import GeneralOptions from "./generalOptions/GeneralOptions";
 import ShipOptions from "./shipOptions/ShipOptions";
@@ -7,13 +9,14 @@ import ResultList from "./resultList/ResultList";
 
 import "./TradeRoutes.scss";
 
-function TradeRoutes() {
+function TradeRoutes(props) {
     const formGeneralOptions = useRef();
 
     const onClickHandler = (e) => {
         e.preventDefault();
-        formGeneralOptions.current.onSubmitHandler();
+        // formGeneralOptions.current.onSubmitHandler();
         console.log(formGeneralOptions.current);
+        props.calculateRoutes();
     };
 
     return (
@@ -30,5 +33,11 @@ function TradeRoutes() {
         </div>
     );
 }
-
-export default TradeRoutes;
+// const mapStateToProps = (state, ownProps) => {
+//     return {
+//         isValid:
+//             state.placeParams.startingOptions?.isValid &&
+//             state.placeParams.endingOptions?.isValid,
+//     };
+// };
+export default connect(null, { calculateRoutes })(TradeRoutes);
