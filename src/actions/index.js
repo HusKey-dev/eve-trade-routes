@@ -282,7 +282,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
             // TODO: take these params from user
             const maxCargo = 581250;
             const minProfit = 10000000;
-            const taxRate = 0.05;
+            const taxRate = 0.051;
             const maxWallet = 5000000000;
 
             const routes = [];
