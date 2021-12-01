@@ -280,7 +280,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
         const createRoutes = (starting, ending) => {
             console.log("createRoutes activated");
             // TODO: take these params from user
-            const maxCargo = 581250;
+            const maxCargo = 60000;
             const minProfit = 10000000;
             const taxRate = 0.051;
             const maxWallet = 5000000000;
@@ -316,8 +316,13 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                 let walletRemains = maxWallet;
                 let totalQuantity = 0;
 
-                const copyedSellOrders = [...sellorders];
-                const copyedBuyOrders = [...buyorders];
+                const createCopy = (arrayOfPlainObjects) => {
+                    if (arrayOfPlainObjects.length > 0)
+                        return arrayOfPlainObjects.map((el) => ({ ...el }));
+                    return [];
+                };
+                const copyedSellOrders = createCopy(sellorders);
+                const copyedBuyOrders = createCopy(buyorders);
 
                 const minQuantity = () => {
                     if (
@@ -369,6 +374,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                     const sortedEndingOrders = [
                         ...ending[typeId][endsystem],
                     ].sort((a, b) => b.price - a.price);
+
                     if (isWorthy(sortedEndingOrders)) {
                         for (let startsystem in starting[typeId]) {
                             const sortedStartingOrders = [
@@ -387,6 +393,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                                     startingSystem: +startsystem,
                                     endingSystem: +endsystem,
                                     commodity: sortedEndingOrders[0].name,
+                                    typeId,
                                     quantity,
                                     testField:
                                         (
@@ -426,7 +433,11 @@ export const calculateRoutes = () => async (dispatch, getState) => {
         console.log("sorting results");
         possibleRoutes.sort((a, b) => b.profit - a.profit);
         console.log(possibleRoutes);
-
+        console.log(
+            endingOrders[possibleRoutes[0].typeId][
+                possibleRoutes[0].endingSystem
+            ]
+        );
         // let reS = await axios.get(
         //     "https://esi.evetech.net/latest/route/30000142/30002187"
         // );
