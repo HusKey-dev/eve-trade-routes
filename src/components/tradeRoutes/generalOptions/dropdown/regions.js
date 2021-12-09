@@ -154,3 +154,5 @@ export const hubs = [
 export const hubIds = hubs.map((el) => el.id);
 
 export const regions = [...empireRegions, ...outlawRegions];
+
+export const goodRegionIds = regions.map((el) => el.id);

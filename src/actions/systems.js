@@ -179,5 +179,5 @@ export const fetchCommodity = async (id) => {
 };
 
 export const getSecStatus = (sysId) => {
-    return sysList[sysId].secStatus;
+    return sysList[(+sysId).toString()].secStatus;
 };

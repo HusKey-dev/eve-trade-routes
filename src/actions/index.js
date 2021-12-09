@@ -15,7 +15,11 @@ import {
     getSecStatus,
 } from "./systems";
 
-import { hubIds } from "../components/tradeRoutes/generalOptions/dropdown/regions";
+import {
+    hubIds,
+    regions,
+    goodRegionIds,
+} from "../components/tradeRoutes/generalOptions/dropdown/regions";
 
 const typeIdsData = require("./typeidsdata.json");
 
@@ -67,6 +71,7 @@ export const validateGeneralOptions = () => async (dispatch, getState) => {
 
 export const calculateRoutes = () => async (dispatch, getState) => {
     console.log("calculate routes runned up");
+
     // console.log(sysList);
     // saveFile(await fetchTypeIds(), "systems");
     // let sysList = require("./systemids.json");
@@ -124,25 +129,26 @@ export const calculateRoutes = () => async (dispatch, getState) => {
             if (res.headers["x-pages"] === "1") {
                 return res.data;
             }
-            let result = res.data;
+            let resultFirstPage = res.data;
+            let requests = [];
             for (let i = 2; i <= +res.headers["x-pages"]; i++) {
-                result = [
-                    ...result,
-                    ...(
-                        await retry(() =>
-                            axios.get(
-                                `https://esi.evetech.net/latest/markets/${regionId}/orders`,
-                                {
-                                    params: {
-                                        order_type: orderType,
-                                        page: i,
-                                    },
-                                }
-                            )
+                requests.push(
+                    retry(() =>
+                        axios.get(
+                            `https://esi.evetech.net/latest/markets/${regionId}/orders`,
+                            {
+                                params: {
+                                    order_type: orderType,
+                                    page: i,
+                                },
+                            }
                         )
-                    ).data,
-                ];
+                    )
+                );
             }
+            requests = await Promise.all(requests);
+            const result = [...resultFirstPage];
+            requests.map((el) => el.data).forEach((el) => result.push(...el));
             return result;
         };
         // console.log(await fetchOrders(10000002, "buy"));
@@ -165,10 +171,12 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                 }
             }
             placeIds.systems = placeIds.systems.filter((sysId) => {
-                console.log(sysList[sysId.toString()].regionId);
-                console.log(placeIds.regions);
-                return !placeIds.regions.includes(
-                    sysList[sysId.toString()].regionId
+                // preventing doble fetching data in case of one of chosen regions already includes the chosen system and also cutting off regions without stations or without standard gates (Pochven and Thera)
+                const sysRegion = sysList[sysId.toString()].regionId;
+
+                return (
+                    !placeIds.regions.includes(sysRegion) &&
+                    regions.some((region) => region.id === sysRegion)
                 );
             });
             return placeIds;
@@ -391,6 +399,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                                 const sellPrice = sortedEndingOrders[0].price;
                                 routes.push({
                                     startingSystem: +startsystem,
+                                    startsystem: sysList[startsystem].name,
                                     endingSystem: +endsystem,
                                     commodity: sortedEndingOrders[0].name,
                                     typeId,
@@ -433,15 +442,182 @@ export const calculateRoutes = () => async (dispatch, getState) => {
         console.log("sorting results");
         possibleRoutes.sort((a, b) => b.profit - a.profit);
         console.log(possibleRoutes);
-        console.log(
-            endingOrders[possibleRoutes[0].typeId][
-                possibleRoutes[0].endingSystem
-            ]
-        );
+
         // let reS = await axios.get(
         //     "https://esi.evetech.net/latest/route/30000142/30002187"
         // );
         // console.log(reS);
+
+        const getFormattedRoute = async (origin, dest, secFilter) => {
+            const fetchRoute = async (
+                origin,
+                dest,
+                flag = "shortest",
+                avoidList = []
+            ) => {
+                return (
+                    await retry(
+                        () =>
+                            axios.get(
+                                `https://esi.evetech.net/latest/route/${origin}/${dest}/`,
+                                { params: { flag, avoidList } }
+                            ),
+                        15,
+                        2500
+                    )
+                ).data;
+            };
+
+            let systems;
+            if (secFilter <= 0) {
+                systems = await fetchRoute(origin, dest);
+            } else if (secFilter >= 0.5) {
+                systems = await fetchRoute(origin, dest, "secure");
+                if (
+                    systems.some(
+                        (system) => getSecStatus(system.toString()) < 0.5
+                    )
+                )
+                    return { jumps: false };
+            } else {
+                const avoidList = [];
+                let badSystems = [];
+                try {
+                    do {
+                        systems = await fetchRoute(
+                            origin,
+                            dest,
+                            "shortest",
+                            avoidList
+                        );
+                        badSystems = systems.filter(
+                            (sysId) => getSecStatus(sysId) <= 0
+                        );
+                        if (badSystems.length > 0)
+                            avoidList.push(...badSystems);
+                    } while (badSystems.length && avoidList.length < 200);
+                } catch {
+                    return { jumps: false };
+                }
+                if (avoidList.length >= 200) return { jumps: false };
+            }
+
+            return {
+                origin: sysList[origin.toString()].name,
+                dest: sysList[dest.toString()].name,
+                jumps: systems.length - 1,
+            };
+        };
+        const preparedPossibleRoutes = {};
+        const preparedRoutes = require("./preparedpossibleroutes.json");
+        const validSystems = require("./validystems.json");
+        const preparedHubsRoutes = require("./preparedhubsroutes.json");
+        console.log(preparedHubsRoutes);
+        const prefetched =
+            !preparedHubsRoutes?.["30000142"]?.["30000001"] &&
+            !preparedHubsRoutes?.["30000001"]?.["30000142"];
+        console.log("prefetched is", prefetched);
+        let iter = 0;
+        for (let item of possibleRoutes) {
+            iter++;
+            const starting = item.startingSystem.toString();
+            const ending = item.endingSystem.toString();
+            const isAlreadyFetched =
+                preparedPossibleRoutes?.[starting]?.[ending] ||
+                preparedPossibleRoutes?.[ending]?.[starting];
+            if (
+                !preparedHubsRoutes?.[starting]?.[ending] &&
+                !preparedHubsRoutes?.[ending]?.[starting] &&
+                !isAlreadyFetched
+            ) {
+                const allSec = {};
+                allSec.nulsec = (
+                    await getFormattedRoute(+starting, +ending, 0)
+                ).jumps;
+
+                if (getSecStatus(starting) > 0 && getSecStatus(ending) > 0) {
+                    allSec.lowsec = (
+                        await getFormattedRoute(+starting, +ending, 0.4)
+                    ).jumps;
+                }
+                if (
+                    getSecStatus(starting) >= 0.5 &&
+                    getSecStatus(ending) >= 0.5
+                ) {
+                    allSec.highsec = (
+                        await getFormattedRoute(+starting, +ending, 1)
+                    ).jumps;
+                }
+                if (preparedPossibleRoutes[starting]) {
+                    preparedPossibleRoutes[starting][ending] = { ...allSec };
+                } else {
+                    preparedPossibleRoutes[starting] = {
+                        [ending]: { ...allSec },
+                    };
+                }
+                let progress = (iter / possibleRoutes.length) * 100;
+                if (!iter % 10) {
+                    console.log(`fetching ${progress}%`);
+                }
+            }
+        }
+        // validRoutes.sort((a, b) => b.profitPerJump - a.profitPerJump);
+        // console.log(validRoutes);
+
+        // const systemsWithStationsAndGates = [];
+        // for (let id in sysList) {
+        //     if (goodRegionIds.includes(+sysList[id].regionId)) {
+        //         let res = await retry(() =>
+        //             axios.get(`https://esi.evetech.net/latest/universe/systems/${id}/
+        //     `)
+        //         );
+        //         res = res.data?.stations;
+        //         if (res) systemsWithStationsAndGates.push(+id);
+        //     }
+        // }
+        // console.log(systemsWithStationsAndGates);
+        // saveFile(systemsWithStationsAndGates, "validystems");
+
+        // const validHighSec = validSystems.filter(
+        //     (id) => sysList[id.toString()].secStatus >= 0.5
+        // );
+        // console.log(validHighSec);
+
+        const searchRoutes = async (startIds, destIds) => {
+            if (typeof startIds === "number") startIds = [startIds];
+            let result = {};
+            for (let start of startIds) {
+                console.log("staritng fetching routes for id", start);
+                for (let dest of destIds) {
+                    const addiction = {};
+                    if (start !== dest) {
+                        let res = await getFormattedRoute(start, dest, 0);
+                        const { jumps: nulsec } = res;
+                        addiction.nulsec = nulsec;
+                        const destSec = getSecStatus(dest);
+                        if (destSec > 0) {
+                            res = await getFormattedRoute(start, dest, 0.4);
+                            const { jumps: lowsec } = res;
+                            addiction.lowsec = lowsec;
+                        }
+                        if (destSec >= 0.5) {
+                            res = await getFormattedRoute(start, dest, 1);
+                            const { jumps: highsec } = res;
+                            addiction.highsec = highsec;
+                        }
+                        if (result[start]) {
+                            result[start][dest] = addiction;
+                        } else {
+                            result = {
+                                ...result,
+                                [start]: { [dest]: addiction },
+                            };
+                        }
+                    }
+                }
+            }
+            return result;
+        };
 
         return dispatch({ type: "CALCULATE_ROUTES", payload: "some data" });
     } else {
