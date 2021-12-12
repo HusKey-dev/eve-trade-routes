@@ -133,16 +133,19 @@ export const calculateRoutes = () => async (dispatch, getState) => {
             let requests = [];
             for (let i = 2; i <= +res.headers["x-pages"]; i++) {
                 requests.push(
-                    retry(() =>
-                        axios.get(
-                            `https://esi.evetech.net/latest/markets/${regionId}/orders`,
-                            {
-                                params: {
-                                    order_type: orderType,
-                                    page: i,
-                                },
-                            }
-                        )
+                    retry(
+                        () =>
+                            axios.get(
+                                `https://esi.evetech.net/latest/markets/${regionId}/orders`,
+                                {
+                                    params: {
+                                        order_type: orderType,
+                                        page: i,
+                                    },
+                                }
+                            ),
+                        15,
+                        2000
                     )
                 );
             }
@@ -153,6 +156,8 @@ export const calculateRoutes = () => async (dispatch, getState) => {
         };
         // console.log(await fetchOrders(10000002, "buy"));
         let { startingOptions, endingOptions } = getState().placeParams;
+
+        const secFilter = 1;
 
         const createFormatIds = async (params) => {
             let placeIds = { regions: [], systems: [] };
@@ -207,7 +212,8 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                 packagedVolume,
                 secStatus: getSecStatus(order.system_id),
             };
-
+            if (secFilter > 0 && formattedOrder.secStatus <= 0) return;
+            if (secFilter === 1 && formattedOrder.secStatus < 0.5) return;
             const { price, volume, orderId } = formattedOrder;
             const insideFormattedOrder = {
                 price,
@@ -254,7 +260,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                 }
             }
         };
-        const [startingOrders, endingOrders] = [{}, {}];
+        let [startingOrders, endingOrders] = [{}, {}];
         const addOrders = async (ids, orderType = "sell") => {
             console.log("starting adding ", orderType, " orders");
             for (let id of ids.regions) {
@@ -279,6 +285,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
         await addOrders(startIds, "sell");
         await addOrders(endIds, "buy");
 
+        console.log(startingOrders);
         console.log("startIds is", startIds);
         // console.log(startingOrders);
 
@@ -477,8 +484,12 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                     systems.some(
                         (system) => getSecStatus(system.toString()) < 0.5
                     )
-                )
+                ) {
+                    console.log(
+                        systems.filter((system) => getSecStatus(system) < 0.5)
+                    );
                     return { jumps: false };
+                }
             } else {
                 const avoidList = [];
                 let badSystems = [];
@@ -493,8 +504,9 @@ export const calculateRoutes = () => async (dispatch, getState) => {
                         badSystems = systems.filter(
                             (sysId) => getSecStatus(sysId) <= 0
                         );
-                        if (badSystems.length > 0)
+                        if (badSystems.length > 0) {
                             avoidList.push(...badSystems);
+                        }
                     } while (badSystems.length && avoidList.length < 200);
                 } catch {
                     return { jumps: false };
@@ -512,55 +524,68 @@ export const calculateRoutes = () => async (dispatch, getState) => {
         const preparedRoutes = require("./preparedpossibleroutes.json");
         const validSystems = require("./validystems.json");
         const preparedHubsRoutes = require("./preparedhubsroutes.json");
-        console.log(preparedHubsRoutes);
-        const prefetched =
-            !preparedHubsRoutes?.["30000142"]?.["30000001"] &&
-            !preparedHubsRoutes?.["30000001"]?.["30000142"];
-        console.log("prefetched is", prefetched);
-        let iter = 0;
-        for (let item of possibleRoutes) {
-            iter++;
-            const starting = item.startingSystem.toString();
-            const ending = item.endingSystem.toString();
-            const isAlreadyFetched =
-                preparedPossibleRoutes?.[starting]?.[ending] ||
-                preparedPossibleRoutes?.[ending]?.[starting];
-            if (
-                !preparedHubsRoutes?.[starting]?.[ending] &&
-                !preparedHubsRoutes?.[ending]?.[starting] &&
-                !isAlreadyFetched
-            ) {
-                const allSec = {};
-                allSec.nulsec = (
-                    await getFormattedRoute(+starting, +ending, 0)
-                ).jumps;
 
-                if (getSecStatus(starting) > 0 && getSecStatus(ending) > 0) {
-                    allSec.lowsec = (
-                        await getFormattedRoute(+starting, +ending, 0.4)
-                    ).jumps;
-                }
-                if (
-                    getSecStatus(starting) >= 0.5 &&
-                    getSecStatus(ending) >= 0.5
-                ) {
-                    allSec.highsec = (
-                        await getFormattedRoute(+starting, +ending, 1)
-                    ).jumps;
-                }
-                if (preparedPossibleRoutes[starting]) {
-                    preparedPossibleRoutes[starting][ending] = { ...allSec };
-                } else {
-                    preparedPossibleRoutes[starting] = {
-                        [ending]: { ...allSec },
-                    };
-                }
-                let progress = (iter / possibleRoutes.length) * 100;
-                if (!iter % 10) {
-                    console.log(`fetching ${progress}%`);
-                }
+        const getJumps = async (startId, endId, secFilter) => {
+            let security;
+            if (secFilter <= 0) {
+                security = "nulsec";
+            } else if (secFilter >= 0.5) {
+                security = "highsec";
+            } else {
+                security = "lowsec";
             }
-        }
+
+            // const getPreparedHubs =
+            //     preparedHubsRoutes?.[startId]?.[endId] ||
+            //     preparedHubsRoutes?.[endId]?.[startId];
+
+            // if (getPreparedHubs) return getPreparedHubs[security];
+
+            // const getPreparedPossibleRoutes =
+            //     preparedRoutes?.[startId]?.[endId] ||
+            //     preparedRoutes?.[endId]?.[startId];
+
+            // if (getPreparedPossibleRoutes !== undefined)
+            //     return getPreparedPossibleRoutes[security];
+
+            const straightLocal = JSON.parse(
+                localStorage.getItem(startId.toString() + endId.toString())
+            );
+            const reversedLocal = JSON.parse(
+                localStorage.getItem(endId.toString() + startId.toString())
+            );
+            const getLocalRoutes = straightLocal || reversedLocal;
+
+            if (getLocalRoutes?.[security] !== undefined)
+                return getLocalRoutes[security];
+
+            const { jumps } = await getFormattedRoute(
+                startId,
+                endId,
+                secFilter
+            );
+
+            if (straightLocal) {
+                straightLocal[security] = jumps;
+                localStorage.setItem(
+                    startId.toString() + endId.toString(),
+                    JSON.stringify(straightLocal)
+                );
+            } else if (reversedLocal) {
+                reversedLocal[security] = jumps;
+                localStorage.setItem(
+                    endId.toString() + startId.toString(),
+                    JSON.stringify(reversedLocal)
+                );
+            } else {
+                localStorage.setItem(
+                    startId.toString() + endId.toString(),
+                    JSON.stringify({ [security]: jumps })
+                );
+            }
+
+            return jumps;
+        };
         // validRoutes.sort((a, b) => b.profitPerJump - a.profitPerJump);
         // console.log(validRoutes);
 
@@ -582,6 +607,21 @@ export const calculateRoutes = () => async (dispatch, getState) => {
         //     (id) => sysList[id.toString()].secStatus >= 0.5
         // );
         // console.log(validHighSec);
+
+        const routesWithJumps = await Promise.all(
+            possibleRoutes.map(async (el) => {
+                const jumps = await getJumps(
+                    el.startingSystem,
+                    el.endingSystem,
+                    secFilter
+                );
+                return { ...el, jumps, profitPerJump: el.profit / jumps };
+            })
+        );
+
+        routesWithJumps.sort((a, b) => b.profitPerJump - a.profitPerJump);
+
+        console.log(routesWithJumps);
 
         const searchRoutes = async (startIds, destIds) => {
             if (typeof startIds === "number") startIds = [startIds];
