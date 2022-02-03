@@ -63,7 +63,7 @@ function JitaPrice() {
 
     return (
         <div className="JitaPrice">
-            <div className="container">
+            <div className="container animate-appear">
                 <form onSubmit={onSubmitHandler}>
                     <label>
                         Copypaste The Item Name Here:

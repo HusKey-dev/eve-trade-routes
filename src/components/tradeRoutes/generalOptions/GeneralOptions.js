@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Dropdown from "./dropdown/Dropdown";
-import { validateGeneralOptions } from "../../../actions";
+import { validateGeneralOptions, updateParams } from "../../../actions";
 
 class GeneralOptions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // startingOptions: this.props.startingOptions,
-            // endingOptions: this.props.endingOptions,
             maxRange: 999,
             maxCargo: 581250,
             maxWallet: 9999999999999,
@@ -30,7 +28,8 @@ class GeneralOptions extends Component {
 
     onSubmitHandler = (e) => {
         e?.preventDefault();
-        this.validateForm();
+        this.updateParams();
+        // this.props.validateGeneralOptions();
     };
 
     onChangeHandler = (e) => {
@@ -62,15 +61,26 @@ class GeneralOptions extends Component {
         this.props.validateGeneralOptions();
     };
 
+    updateParams = () => {
+        const params = {
+            maxRange: this.state.maxRange,
+            maxCargo: this.state.maxCargo,
+            maxWallet: this.state.maxWallet,
+            secFilter: this.state.secFilter,
+        };
+        this.props.updateParams(params);
+    };
     render() {
         return (
             <form onSubmit={this.onSubmitHandler}>
-                <label htmlFor="startingSelect">Select Start Point:</label>
-                <Dropdown key="startingSelect" id="startingSelect" />
-                <br />
-                <label htmlFor="endingSelect">Select End Point:</label>
-                <Dropdown key="endingSelect" id="endingSelect" />
-                <br />
+                <div className="form-margin">
+                    <label htmlFor="startingSelect">Select Start Point:</label>
+                    <Dropdown key="startingSelect" id="startingSelect" />
+                </div>
+                <div className="form-margin">
+                    <label htmlFor="endingSelect">Select End Point:</label>
+                    <Dropdown key="endingSelect" id="endingSelect" />
+                </div>
                 <label htmlFor="maxRange">Choose Max Range (jumps):</label>
                 <input
                     type="number"
@@ -124,6 +134,6 @@ class GeneralOptions extends Component {
 //         endingOptions: state.placeParams.endingOptions,
 //     };
 // };
-export default connect(null, { validateGeneralOptions }, null, {
+export default connect(null, { validateGeneralOptions, updateParams }, null, {
     forwardRef: true,
 })(GeneralOptions);

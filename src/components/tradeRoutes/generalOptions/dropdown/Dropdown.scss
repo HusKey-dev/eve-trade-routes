@@ -1,9 +1,16 @@
 .Dropdown {
-    border: 2px solid gold;
+    outline: 2px solid gold;
     border-radius: 10px;
     width: max-content;
-    padding: 1rem;
+    // padding: 1rem;
+    overflow: hidden;
     background: hsla(0, 0, 0, 0.4);
+    opacity: 100%;
+
+    & > div {
+        padding: 1rem;
+        // animation: dissapear-dropdown 0.6s linear backwards;
+    }
 
     .columnContainer {
         display: grid;
@@ -46,4 +53,53 @@
     color: black;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
+}
+
+.close-animation {
+    opacity: 0;
+    border-width: 0px;
+    transition: all 0.2s ease-in 1.2s;
+
+    & > div {
+        overflow: hidden;
+        animation: dissapear-dropdown 0.7s ease-in-out forwards 0.7s;
+        opacity: 0;
+        transition: opacity 0.7s ease-in-out;
+
+        @keyframes dissapear-dropdown {
+            0% {
+                opacity: 0;
+                margin-top: 0;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            100% {
+                opacity: 0;
+                margin-top: -100%;
+                // transform: rotate3d(1, 0, 0, 90deg);
+                padding-bottom: 0;
+                padding-top: 0;
+            }
+        }
+    }
+}
+
+.appear-dropdown {
+    animation: appear 0.1s linear forwards;
+
+    & > div {
+        animation: dissapear-dropdown 0.7s ease-in-out reverse,
+            appear-dropdown 0.7s ease-in-out forwards 0.7s;
+    }
+
+    @keyframes appear-dropdown {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 100%;
+        }
+    }
 }

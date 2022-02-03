@@ -1,0 +1,21 @@
+.SearchingModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    width: 400px;
+    height: 300px;
+
+    // border: 2px solid gold;
+    border-radius: 15px;
+
+    background-color: hsl(60, 6%, 6%);
+
+    img {
+        display: block;
+        height: 200px;
+        width: 200px;
+        color: white;
+    }
+}

@@ -1,0 +1,23 @@
+.ResultList {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    margin-top: 10px;
+    max-width: 711px;
+
+    .card {
+        background: hsla(0, 0, 0, 0.4);
+    }
+
+    .highsec {
+        color: green;
+    }
+
+    .lowsec {
+        color: rgb(255, 110, 58);
+    }
+
+    .nulsec {
+        color: rgb(204, 0, 0);
+    }
+}
