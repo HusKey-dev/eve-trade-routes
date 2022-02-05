@@ -21,6 +21,8 @@ import {
     goodRegionIds,
 } from "../components/tradeRoutes/generalOptions/dropdown/regions";
 
+import createId from "./createId";
+
 const typeIdsData = require("./typeidsdata.json");
 
 export const saveOptions = (type, state) => {
@@ -664,7 +666,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
 
         routesWithJumps.sort((a, b) => b.profitPerJump - a.profitPerJump);
         for (let i = 0; i < routesWithJumps.length; i++) {
-            routesWithJumps[i].id = i;
+            routesWithJumps[i].id = createId();
         }
         console.log(routesWithJumps);
 
