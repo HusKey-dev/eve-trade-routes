@@ -31,6 +31,43 @@
         display: block;
         margin-top: 1rem;
     }
+
+    .check-box {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+
+        &:checked + .custom-box {
+            background-color: gold;
+            color: black;
+        }
+
+        &:focus + .custom-box {
+            // box-shadow: 0 0 0 2px white;
+        }
+    }
+
+    .label_check-box {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .custom-box {
+        font-size: 0.7rem;
+        color: transparent;
+        border-radius: 4px;
+        margin-right: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.1rem;
+        height: 1.1rem;
+        border: 2px solid gold;
+        transition: background-color 0.3s linear;
+    }
 }
 
 .button {

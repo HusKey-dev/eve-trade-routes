@@ -107,13 +107,17 @@ class Dropdown extends React.Component {
         const renderItems = (array) => {
             return array.map((system) => (
                 <React.Fragment key={system.id}>
-                    <label>
+                    <label className="label_check-box">
                         <input
                             type="checkbox"
                             name={system.id}
                             checked={this.state.data.includes(+system.id)}
                             onChange={onChangeHandler}
+                            className="check-box"
                         ></input>
+                        <div className="custom-box">
+                            <i className="fas fa-check check-mark"></i>
+                        </div>
                         {` ${system.name}`}
                     </label>
                 </React.Fragment>
