@@ -114,7 +114,7 @@ class Dropdown extends React.Component {
                             checked={this.state.data.includes(+system.id)}
                             onChange={onChangeHandler}
                             className="check-box"
-                        ></input>
+                        />
                         <div className="custom-box">
                             <i className="fas fa-check check-mark"></i>
                         </div>

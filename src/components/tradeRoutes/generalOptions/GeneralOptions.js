@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import Dropdown from "./dropdown/Dropdown";
 import { validateGeneralOptions, updateParams } from "../../../actions";
 
+import "./GeneralOptions.scss";
+import { RangeInput } from "./RangeInput/RangeInput";
+
 class GeneralOptions extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +18,9 @@ class GeneralOptions extends Component {
         };
     }
 
+    componentDidUpdate() {
+        console.log(this.state);
+    }
     componentDidMount() {
         console.log("mounted with state =", this.state);
         if (sessionStorage.getItem("GeneralOptions")) {
@@ -47,7 +53,7 @@ class GeneralOptions extends Component {
 
     onBlurHandler = (e) => {
         if (e.target.value === "0" && e.target.id === "maxRange") {
-            this.setState({ ...this.state, [e.target.id]: 99999999 });
+            this.setState({ ...this.state, [e.target.id]: 999 });
         }
         if (
             (e.target.value === "0" || +e.target.value > 581250) &&
@@ -70,9 +76,13 @@ class GeneralOptions extends Component {
         };
         this.props.updateParams(params);
     };
+
+    handleInputChange = (value) => {
+        this.setState({ ...this.state, secFilter: +value });
+    };
     render() {
         return (
-            <form onSubmit={this.onSubmitHandler}>
+            <form onSubmit={this.onSubmitHandler} className="GeneralOptions">
                 <div className="form-margin">
                     <label htmlFor="startingSelect">Select Start Point:</label>
                     <Dropdown key="startingSelect" id="startingSelect" />
@@ -81,45 +91,56 @@ class GeneralOptions extends Component {
                     <label htmlFor="endingSelect">Select End Point:</label>
                     <Dropdown key="endingSelect" id="endingSelect" />
                 </div>
-                <label htmlFor="maxRange">Choose Max Range (jumps):</label>
-                <input
-                    type="number"
-                    id="maxRange"
-                    onInput={this.onChangeHandler}
-                    onBlur={this.onBlurHandler}
-                    value={this.state.maxRange?.toString()}
-                />
-                <br />
-                <label htmlFor="maxCargo">Max Cargo Volume:</label>
-                <input
-                    type="number"
-                    id="maxCargo"
-                    onChange={this.onChangeHandler}
-                    onBlur={this.onBlurHandler}
-                    value={this.state.maxCargo.toString()}
-                />
-                <br />
-                <label htmlFor="maxWallet">Max Wallet:</label>
-                <input
-                    type="number"
-                    id="maxWallet"
-                    onChange={this.onChangeHandler}
-                    onBlur={this.onBlurHandler}
-                    value={this.state.maxWallet?.toString()}
-                />
-                <br />
-                <label htmlFor="secFilter">Security Filter:</label>
-                <input
-                    type="range"
-                    name=""
-                    id="secFilter"
-                    min="0"
-                    max="1"
-                    step="0.5"
-                    onChange={this.onChangeHandler}
-                    value={this.state.secFilter?.toString()}
-                />
-                <br />
+                <div className="form-margin">
+                    <label htmlFor="maxRange">Choose Max Range (jumps):</label>
+                    <input
+                        maxLength="3"
+                        type="number"
+                        id="maxRange"
+                        onInput={this.onChangeHandler}
+                        onBlur={this.onBlurHandler}
+                        value={this.state.maxRange?.toString()}
+                        className="number-input"
+                    />
+                </div>
+                <div className="form-margin">
+                    <label htmlFor="maxCargo">Max Cargo Volume:</label>
+                    <input
+                        type="number"
+                        id="maxCargo"
+                        onChange={this.onChangeHandler}
+                        onBlur={this.onBlurHandler}
+                        value={this.state.maxCargo.toString()}
+                        className="number-input"
+                    />
+                </div>
+                <div className="form-margin">
+                    <label htmlFor="maxWallet">Max Wallet:</label>
+                    <input
+                        type="number"
+                        id="maxWallet"
+                        onChange={this.onChangeHandler}
+                        onBlur={this.onBlurHandler}
+                        value={this.state.maxWallet?.toString()}
+                        className="number-input"
+                    />
+                </div>
+                <div className="form-margin">
+                    <span>Security Filter:</span>
+                    <RangeInput
+                        value={this.state.secFilter}
+                        min={0}
+                        max={1}
+                        step={0.5}
+                        onInputchange={this.handleInputChange}
+                        width={300}
+                        options={{
+                            0: { color: "red", legend: "null" },
+                            0.5: { color: "orange", legend: "low" },
+                            1: { color: "hsl(145, 100%, 50%)", legend: "high" },
+                        }}
+                    />
+                </div>
                 <button type="submit" disabled>
                     submit
                 </button>

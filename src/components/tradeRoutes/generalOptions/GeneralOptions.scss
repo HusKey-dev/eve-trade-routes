@@ -1,0 +1,13 @@
+.GeneralOptions {
+    .number-input {
+        // width: min-content;
+        color: black;
+        display: inline-block;
+        background: rgba(250, 250, 250, 0.445);
+        text-align: end;
+        border: 0;
+        padding: 3px;
+        border-radius: 5px;
+        min-width: 3rem;
+    }
+}
