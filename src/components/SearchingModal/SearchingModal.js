@@ -7,7 +7,6 @@ import gifloader from "./Spinner3.gif";
 export const SearchingModal = (props) => {
     return (
         <div className="SearchingModal">
-            {/* <img src={preloader} alt="" /> */}
             <img src={gifloader} alt="" />
             <p>Loading...</p>
         </div>

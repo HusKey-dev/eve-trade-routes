@@ -74,9 +74,12 @@ function JitaPrice() {
                             onChange={(e) => {
                                 setUserInput(e.target.value);
                             }}
+                            className="text-input"
                         ></input>
                     </label>
-                    <button type="submit">Check The Price</button>
+                    <button type="submit" className="btn">
+                        Check The Price
+                    </button>
                     <PriceResult
                         shouldRender={isSearched}
                         orders={{

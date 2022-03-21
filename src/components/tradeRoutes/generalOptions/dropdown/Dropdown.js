@@ -152,6 +152,7 @@ class Dropdown extends React.Component {
                             type="text"
                             value={this.state.system}
                             onChange={onsystemChange}
+                            className="text-input"
                         />
                     </label>
                 </div>

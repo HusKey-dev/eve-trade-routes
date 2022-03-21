@@ -2,13 +2,35 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { useState } from "react";
 import { connect } from "react-redux";
+import { closeErrorMessage } from "../../actions";
+
+import SearchingModal from "../SearchingModal/SearchingModal";
+import ErrorModal from "../ErrorModal/ErrorModal";
+
 import "./Modal.scss";
 
 const Modal = (props) => {
-    if (props.display) {
-        return ReactDOM.createPortal(
+    const Portal = (props) =>
+        ReactDOM.createPortal(
             <div className="Modal">{props.children}</div>,
             document.querySelector("#modal")
+        );
+
+    if (props.error) {
+        return (
+            <>
+                <Portal>
+                    <ErrorModal handleClick={() => props.closeErrorMessage()} />
+                </Portal>
+            </>
+        );
+    } else if (props.search) {
+        return (
+            <>
+                <Portal>
+                    <SearchingModal />
+                </Portal>
+            </>
         );
     }
 
@@ -17,7 +39,8 @@ const Modal = (props) => {
 
 const mapStateToProps = (state, ownProps) => ({
     ...ownProps,
-    display: state.searchModal,
+    search: state.searchModal,
+    error: state.errorModal,
 });
 
-export default connect(mapStateToProps, null)(Modal);
+export default connect(mapStateToProps, { closeErrorMessage })(Modal);

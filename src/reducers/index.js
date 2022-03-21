@@ -3,10 +3,12 @@ import placeParamsReducer from "./placeParamsReducer";
 import routesReducer from "./routesReducer";
 import optionsParamsReducer from "./optionsParamsReducer";
 import searchModalReducer from "./searchModalReducer";
+import errorModalReducer from "./errorModalReducer";
 
 export default combineReducers({
     placeParams: placeParamsReducer,
     optionsParams: optionsParamsReducer,
     routes: routesReducer,
     searchModal: searchModalReducer,
+    errorModal: errorModalReducer,
 });

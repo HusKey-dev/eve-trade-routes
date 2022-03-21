@@ -1,17 +1,33 @@
-import React from 'react';
-import './main.scss';
+import React from "react";
+import "./main.scss";
 
 function Main() {
     return (
         <div className="Main">
-            <div className="container">
-                <p>Welcome to the brand new project, which allows you to find best trade routes in New Eden!</p>
-                <p>Eve Trade Routes uses the latest esi api and takes data directly from ccp. So it is completely safe and secure.</p>
-                <p>You can choose different options to customise your preferences such as jump radius or system security filter </p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur delectus repellendus dolorum exercitationem ut, minus adipisci optio culpa at voluptates rerum dolores quod voluptatibus! Autem provident nam, ipsam sapiente eligendi harum natus cumque impedit! Quia vitae, repellendus nesciunt explicabo iusto eveniet maiores fugit animi tenetur? Vitae aperiam sit ab odio, ratione obcaecati explicabo atque laboriosam sapiente quidem. Repellat aspernatur quo, numquam atque iure deserunt impedit iste assumenda fugit! Sunt necessitatibus porro dicta excepturi autem, sed consequatur ducimus soluta cumque voluptatem, molestias tenetur? Doloremque magni consequatur optio! Dolore quam reiciendis, dolor illo ipsam error quo soluta, nostrum modi eligendi voluptatem fuga sit ipsa accusamus hic corrupti atque doloribus iusto praesentium incidunt fugiat? Obcaecati numquam impedit consectetur eveniet non. Illum, modi omnis laborum pariatur, beatae dolorem officia, repellat corrupti possimus optio iure. Totam error est quidem at quibusdam, eveniet tempore sit fugit praesentium. Nihil corporis perferendis officia commodi facere labore sapiente voluptatem distinctio animi modi? Sed nihil dolores, officiis quibusdam debitis vel commodi, sequi, doloremque magnam aliquam rem? Incidunt tempora nam provident, omnis pariatur, similique nulla labore, assumenda itaque blanditiis minima. Mollitia molestiae error ab omnis exercitationem voluptatibus, placeat iure eaque? Nihil molestiae cum expedita corporis, dignissimos id excepturi commodi modi eaque natus debitis dicta, nesciunt inventore! Alias id, tempore nulla aliquid, repellat et perferendis harum non ipsam temporibus esse! Ullam ea laudantium quo cum sint ratione, reiciendis nam est magnam? Est, maxime dolorem nobis ipsam itaque alias natus ullam quibusdam provident quod, molestiae quia at possimus nemo earum! Harum dolorem ipsum animi amet accusantium quae quisquam optio modi obcaecati quis quam, consequatur quas sunt similique doloribus possimus tempore atque eveniet ullam officiis rem voluptas? Nulla ipsum excepturi maxime tempora quasi ut aliquam rem obcaecati veniam minima nemo earum deserunt porro assumenda, soluta suscipit doloribus autem atque. Vero repellendus minus ipsa odit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum quas voluptate adipisci tenetur enim. Alias et laudantium beatae. Nobis vel animi sint, aperiam quas eveniet. Sint provident, praesentium laudantium consequuntur ab ipsa dicta cumque. Reiciendis aspernatur consectetur expedita ullam corporis placeat vel. Delectus quaerat exercitationem voluptates ut, reprehenderit velit sint fugit quos eveniet modi voluptate accusantium sunt ullam itaque ex. Iste, quo voluptate quasi aliquam placeat rerum porro sed autem laborum, earum amet sequi. Repudiandae voluptatibus magni deserunt quas ab officiis, consectetur soluta eius culpa ullam minus magnam, ipsum natus in neque quibusdam modi iste molestias quidem architecto. Dignissimos assumenda dolores consequatur voluptatum ratione aut ipsa quam, sunt voluptate autem, officia id ab esse fugiat voluptates! Autem quos blanditiis corporis nihil rem natus, laboriosam minus necessitatibus quam ut, atque, quibusdam in! Tempore eligendi voluptatem, et voluptatum quasi illum odit exercitationem. Doloremque voluptate dolor dignissimos minus, temporibus fugit quidem sunt qui explicabo pariatur cupiditate, ullam sint. Fuga reprehenderit odit eius beatae dolorum sunt vitae in, distinctio deleniti nostrum pariatur. Vero consequuntur eveniet pariatur vitae suscipit, totam laboriosam reprehenderit distinctio delectus ratione impedit nemo repellendus! Quo qui magnam temporibus vitae accusamus laborum dolore voluptatibus adipisci, vero eveniet iste soluta enim suscipit quos ducimus aspernatur autem error architecto pariatur reiciendis maxime? Aperiam nostrum expedita quis ad assumenda non obcaecati rerum, ut in eius modi praesentium corporis consequuntur, numquam, perspiciatis labore quibusdam. Nesciunt a veritatis temporibus, veniam nulla sed voluptatibus explicabo ratione in quaerat officiis repudiandae deleniti delectus, eveniet ea? Cum est doloremque distinctio neque qui earum magnam recusandae unde ducimus explicabo. Officiis perspiciatis sit eos non incidunt minima odit consequatur, iure quisquam veritatis, ut veniam voluptatum similique ipsam. Veritatis eos corrupti totam obcaecati itaque, impedit temporibus enim architecto? Soluta, porro dolorum. Placeat itaque dolores quia dolore distinctio voluptas eos aut reiciendis eaque quae?</p>
-            </div>
+            <header>
+                Welcome to the brand new project, which allows you to find best
+                trade routes in New Eden!
+            </header>
+            <div className="divide-line"></div>
+            <p>
+                Eve Trade Routes uses the latest esi api and takes data directly
+                from ccp. So it is completely safe and secure.
+            </p>
+            <p>
+                You can choose different options to customise your preferences
+                such as jump radius or system security filter.
+            </p>
+            <p>Notice, that routes only include stations, not citadels</p>
+            <div className="divide-line"></div>
+            <p className="warning">
+                <span className="warning__hero">Warning:</span> Due to techical
+                limits of CCP services, all provided price data has some update
+                period (about 10 minutes) and therefore may be outdated. Also,
+                CCP services are a little bit buggy, and sometimes may provide
+                incorrect results. Use it at your own risk.
+            </p>
         </div>
-    )
+    );
 }
 
-export default Main
+export default Main;

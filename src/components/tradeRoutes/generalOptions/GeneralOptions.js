@@ -5,14 +5,20 @@ import { validateGeneralOptions, updateParams } from "../../../actions";
 
 import "./GeneralOptions.scss";
 import { RangeInput } from "./RangeInput/RangeInput";
+import NumberInput from "./numberinput/NumberInput";
 
 class GeneralOptions extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.defaultValues = {
             maxRange: 999,
             maxCargo: 581250,
-            maxWallet: 9999999999999,
+            maxWallet: 999999999999,
+        };
+        this.state = {
+            maxRange: this.defaultValues.maxRange,
+            maxCargo: this.defaultValues.maxCargo,
+            maxWallet: this.defaultValues.maxWallet,
             secFilter: 0,
             isValid: null,
         };
@@ -80,51 +86,70 @@ class GeneralOptions extends Component {
     handleInputChange = (value) => {
         this.setState({ ...this.state, secFilter: +value });
     };
+    handleNumberInputChange = (value, id) => {
+        if (isNaN(+value)) {
+            this.setState(this.state);
+        } else {
+            console.log(value, id);
+            console.log({ ...this.state, [id]: +value });
+            this.setState({ ...this.state, [id]: +value });
+        }
+    };
+    handleNumberInputBlur = (value, id) => {
+        if (value === 0) {
+            this.setState({ ...this.state, [id]: 1 });
+        } else if (this.defaultValues[id] && value >= this.defaultValues[id]) {
+            this.setState({ ...this.state, [id]: this.defaultValues[id] });
+        }
+    };
     render() {
         return (
             <form onSubmit={this.onSubmitHandler} className="GeneralOptions">
-                <div className="form-margin">
-                    <label htmlFor="startingSelect">Select Start Point:</label>
+                <div className="form-margin form-margin__no-wrap">
+                    <label htmlFor="startingSelect">Start Point:</label>
                     <Dropdown key="startingSelect" id="startingSelect" />
                 </div>
-                <div className="form-margin">
-                    <label htmlFor="endingSelect">Select End Point:</label>
+                <div className="form-margin form-margin__no-wrap">
+                    <label htmlFor="endingSelect">End Point:</label>
                     <Dropdown key="endingSelect" id="endingSelect" />
                 </div>
                 <div className="form-margin">
-                    <label htmlFor="maxRange">Choose Max Range (jumps):</label>
-                    <input
-                        maxLength="3"
-                        type="number"
-                        id="maxRange"
-                        onInput={this.onChangeHandler}
-                        onBlur={this.onBlurHandler}
-                        value={this.state.maxRange?.toString()}
-                        className="number-input"
-                    />
+                    <label>
+                        Max Range (jumps):
+                        <NumberInput
+                            id="maxRange"
+                            size={3}
+                            value={this.state.maxRange}
+                            onNumberInputChange={this.handleNumberInputChange}
+                            onNumberInputBlur={this.handleNumberInputBlur}
+                        />
+                    </label>
                 </div>
                 <div className="form-margin">
-                    <label htmlFor="maxCargo">Max Cargo Volume:</label>
-                    <input
-                        type="number"
-                        id="maxCargo"
-                        onChange={this.onChangeHandler}
-                        onBlur={this.onBlurHandler}
-                        value={this.state.maxCargo.toString()}
-                        className="number-input"
-                    />
+                    <label>
+                        Max Cargo Volume:
+                        <NumberInput
+                            id="maxCargo"
+                            size={6}
+                            value={this.state.maxCargo}
+                            onNumberInputChange={this.handleNumberInputChange}
+                            onNumberInputBlur={this.handleNumberInputBlur}
+                        />
+                    </label>
                 </div>
                 <div className="form-margin">
-                    <label htmlFor="maxWallet">Max Wallet:</label>
-                    <input
-                        type="number"
-                        id="maxWallet"
-                        onChange={this.onChangeHandler}
-                        onBlur={this.onBlurHandler}
-                        value={this.state.maxWallet?.toString()}
-                        className="number-input"
-                    />
+                    <label>
+                        Max Wallet:
+                        <NumberInput
+                            id="maxWallet"
+                            size={12}
+                            value={this.state.maxWallet}
+                            onNumberInputChange={this.handleNumberInputChange}
+                            onNumberInputBlur={this.handleNumberInputBlur}
+                        />
+                    </label>
                 </div>
+
                 <div className="form-margin">
                     <span>Security Filter:</span>
                     <RangeInput
@@ -133,7 +158,7 @@ class GeneralOptions extends Component {
                         max={1}
                         step={0.5}
                         onInputchange={this.handleInputChange}
-                        width={300}
+                        width={250}
                         options={{
                             0: { color: "red", legend: "null" },
                             0.5: { color: "orange", legend: "low" },
@@ -141,9 +166,6 @@ class GeneralOptions extends Component {
                         }}
                     />
                 </div>
-                <button type="submit" disabled>
-                    submit
-                </button>
             </form>
         );
     }

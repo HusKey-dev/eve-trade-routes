@@ -8,6 +8,7 @@ export class ResultList extends Component {
         super(props);
         this.state = {
             routes: this.props.routes,
+            limit: 20,
         };
     }
 
@@ -40,13 +41,37 @@ export class ResultList extends Component {
                             {item.endsystem}
                         </span>
                     </p>
-                    <p>jumps: {item.jumps}</p>
-                    <p>profit: {item.profit} mil isk</p>
-                    <p>profit per jump: {item.profitPerJump} mil isk</p>
-                    <p>commodity: {item.commodity}</p>
-                    <p>quantity: {item.quantity}</p>
-                    <p>you buy: {item.buyPrice} isk</p>
-                    <p>you sell: {item.sellPrice} isk</p>
+                    <p>
+                        jumps: <span className="card__data">{item.jumps}</span>
+                    </p>
+                    <p>
+                        profit:{" "}
+                        <span className="card__data">
+                            {item.profit} mil isk
+                        </span>
+                    </p>
+                    <p>
+                        profit per jump:{" "}
+                        <span className="card__data">
+                            {item.profitPerJump} mil isk
+                        </span>
+                    </p>
+                    <p>
+                        commodity:{" "}
+                        <span className="card__data">{item.commodity}</span>
+                    </p>
+                    <p>
+                        quantity:{" "}
+                        <span className="card__data">{item.quantity}</span>
+                    </p>
+                    <p>
+                        you buy:{" "}
+                        <span className="card__data">{item.buyPrice} isk</span>
+                    </p>
+                    <p>
+                        you sell:{" "}
+                        <span className="card__data">{item.sellPrice} isk</span>
+                    </p>
                 </div>
             </CSSTransition>
         );
@@ -60,10 +85,38 @@ export class ResultList extends Component {
             return "lowsec";
         }
     };
+
+    renderNoResult = () => {
+        return (
+            <CSSTransition
+                classNames="card"
+                className="card"
+                timeout={{ enter: 0, exit: 0 }}
+            >
+                <div>
+                    <div className="no-result">
+                        <p>No Results Found</p>
+                    </div>
+                </div>
+            </CSSTransition>
+        );
+    };
+
+    renderResult = () => {
+        if (!this.props.routes) {
+            return null;
+        } else if (this.props.routes.length === 0) {
+            return this.renderNoResult();
+        } else {
+            return this.state.routes
+                .slice(0, this.state.limit)
+                .map(this.renderItem);
+        }
+    };
     render() {
         return (
             <TransitionGroup className="ResultList" appear>
-                {this.state.routes.map(this.renderItem)}
+                {this.renderResult()}
             </TransitionGroup>
         );
     }

@@ -1,13 +1,39 @@
 .GeneralOptions {
+    font-size: 0.9rem;
+
     .number-input {
         // width: min-content;
         color: black;
-        display: inline-block;
+        display: inline-flex;
         background: rgba(250, 250, 250, 0.445);
-        text-align: end;
+        text-align: start;
         border: 0;
-        padding: 3px;
+        padding: 2px;
         border-radius: 5px;
-        min-width: 3rem;
+        width: 3rem;
+    }
+}
+
+@media screen and (max-width: 388px) {
+    .GeneralOptions {
+        .form-margin {
+            & > label {
+                display: flex;
+                // flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .form-margin.form-margin__no-wrap > label {
+            display: inline;
+        }
+    }
+}
+
+@media screen and (max-width: 335px) {
+    .GeneralOptions {
+        .form-margin > label {
+            font-size: 0.8rem;
+        }
     }
 }

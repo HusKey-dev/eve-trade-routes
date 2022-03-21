@@ -1,0 +1,69 @@
+.NumberInput {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.4);
+    margin-left: 5px;
+
+    &:hover {
+        border-color: gold;
+
+        & .count-modifier {
+            opacity: 1 !important;
+        }
+    }
+
+    &:focus-within {
+        border-color: gold;
+        .count-modifier {
+            opacity: 1 !important;
+        }
+    }
+    .Number-input__container {
+        display: flex;
+        flex-direction: row;
+
+        .count-modifier {
+            opacity: 0;
+            display: none;
+            cursor: pointer;
+            padding: 0 4px;
+            color: gold;
+            font-size: 0.8rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+
+            &:hover {
+                color: black;
+                background-color: gold;
+            }
+        }
+
+        input {
+            display: inline;
+            outline: none;
+            border: none;
+            font-size: 1rem;
+            background-color: transparent;
+            color: blanchedalmond;
+            align-self: baseline;
+            padding: 2px 0px;
+            margin: 0 7px;
+            text-align: center;
+        }
+    }
+}
+
+@media screen and (max-width: 330px) {
+    .NumberInput {
+        input {
+            font-size: 0.9rem !important;
+        }
+    }
+}

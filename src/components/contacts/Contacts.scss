@@ -1,7 +1,79 @@
 .Contacts {
     flex: 1 1 auto;
+    height: 100%;
 
+    section {
+        margin-bottom: 1rem;
+    }
     .container {
         padding: 1rem;
+    }
+
+    h2 {
+        font-weight: normal;
+        color: gold;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid gold;
+        margin-bottom: 1rem;
+    }
+
+    .ingame::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    .email {
+        color: gold;
+        text-shadow: 1px 2px 2px black;
+    }
+    .character-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        float: right;
+        width: 350px;
+        max-width: 350px;
+
+        .character-card__name {
+            color: gold;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .character-card__avatar {
+            display: block;
+            width: 100%;
+            height: auto;
+            background-color: gold;
+            // max-width: 350px;
+            object-fit: contain;
+            border-radius: 25px;
+            border: 2px solid gold;
+            box-shadow: 0 0 15px gold;
+        }
+    }
+}
+
+@media screen and (min-width: 691px) and (max-width: 1000px) {
+    .Contacts {
+        .character-card {
+            max-width: 30%;
+        }
+    }
+}
+
+@media screen and (max-width: 690px) {
+    .Contacts {
+        .character-card {
+            float: none;
+            max-width: 198px;
+            margin: 1rem auto;
+
+            .character-card__name {
+                font-size: 1.2rem;
+            }
+        }
     }
 }

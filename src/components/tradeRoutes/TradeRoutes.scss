@@ -1,7 +1,12 @@
 .TradeRoutes {
     flex: 1 0 auto;
+    height: 100%;
 
     .container {
         padding: 1rem;
+    }
+
+    .btn {
+        margin-top: 1.5rem;
     }
 }

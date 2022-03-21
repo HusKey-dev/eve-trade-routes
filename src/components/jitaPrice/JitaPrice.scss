@@ -1,4 +1,5 @@
 .JitaPrice {
+    height: 100%;
     flex: 1 1 auto;
     // background-color: hsla(0, 0%, 0%, 0.4);
 
@@ -18,20 +19,20 @@
         align-items: flex-start;
 
         label {
-            color: white;
+            color: blanchedalmond;
+            text-shadow: 2px 2px black;
             width: 100%;
         }
 
         input {
             margin-top: 20px;
             padding: 0.5rem 1rem;
-            border: 1px solid black;
-            border-radius: 4px;
+            // border: 1px solid black;
+            border-radius: 5px;
             width: 100%;
             max-width: 1000px;
-            
         }
-    
+
         button {
             margin-top: 2rem;
             padding: 0.5rem 2rem;
@@ -43,6 +44,7 @@
 
         form {
             position: relative;
+            // z-index: 0;
             overflow: visible;
             width: 100%;
 
@@ -77,9 +79,25 @@
                     td {
                         width: 90%;
                         text-align: end;
-                        padding: 5px 0; 
+                        padding: 5px 0;
                     }
                 }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 420px), screen and (max-height: 470px) {
+    .JitaPrice {
+        .container {
+            justify-content: flex-start;
+
+            form {
+                position: static;
+            }
+
+            .result {
+                position: static !important;
             }
         }
     }

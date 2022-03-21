@@ -27,18 +27,15 @@ function TradeRoutes(props) {
                 <div className="container animate-appear">
                     <div>
                         <GeneralOptions ref={formGeneralOptions} />
-                        <ShipOptions />
-                        <CharacterOptions />
-                        <button onClick={onClickHandler}>
+                        {/* <ShipOptions />
+                        <CharacterOptions /> */}
+                        <button className="btn" onClick={onClickHandler}>
                             Calculate Routes
                         </button>
                     </div>
                     <ResultList />
                 </div>
             </div>
-            <Modal>
-                <SearchingModal />
-            </Modal>
         </>
     );
 }

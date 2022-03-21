@@ -1,7 +1,94 @@
 .Main {
-    // flex: 1 0;
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+    height: 100%;
+    max-width: 1200px;
 
-    .container {
-        padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+
+    header {
+        font-size: 1.7rem;
+        // margin-bottom: 6rem;
+        animation: shining 2s linear infinite alternate both;
+        // text-shadow: 0px 0px 20px gold, 0px 0px 10px gold, 0px 0px 5px gold;
+    }
+
+    @keyframes shining {
+        from {
+            text-shadow: 0px 0px 5px gold;
+        }
+
+        to {
+            text-shadow: 0px 0px 20px gold, 0px 0px 10px gold, 0px 0px 5px gold;
+        }
+    }
+
+    p {
+        max-width: 900px;
+        font-size: 1.2rem;
+        // margin-bottom: 2rem;
+    }
+
+    .divide-line {
+        width: 100%;
+        max-width: 200px;
+        height: 1px;
+        background-color: gold;
+        box-shadow: 0px 0px 1px gold;
+    }
+    .warning {
+        // margin-top: 3rem;
+        // align-self: flex-end;
+        text-align: left;
+        font-size: 0.8rem;
+        color: gold;
+        max-width: 1200px;
+
+        .warning__hero {
+            font-size: 1rem;
+            color: orangered;
+            text-decoration: underline;
+        }
+    }
+}
+
+@media screen and (max-width: 410px) {
+    .Main {
+        gap: 2rem;
+
+        header {
+            font-size: 1.2rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+        .divide-line {
+            height: 1px;
+            width: 100px;
+        }
+    }
+}
+
+@media screen and (min-width: 411px) and (max-width: 510px) {
+    .Main {
+        gap: 2.5rem;
+
+        header {
+            font-size: 1.4rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+
+        .divide-line {
+            width: 150px;
+        }
     }
 }

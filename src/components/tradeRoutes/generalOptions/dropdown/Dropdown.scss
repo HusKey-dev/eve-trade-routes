@@ -1,11 +1,12 @@
 .Dropdown {
     outline: 2px solid gold;
     border-radius: 10px;
-    width: max-content;
+    max-width: max-content;
     // padding: 1rem;
     overflow: hidden;
     background: hsla(0, 0, 0, 0.4);
     opacity: 100%;
+    // flex-wrap: nowrap;
 
     & > div {
         padding: 1rem;
@@ -13,8 +14,9 @@
     }
 
     .columnContainer {
-        display: grid;
-        grid-template-columns: auto auto auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
 
         .regionColumn {
             display: flex;
@@ -72,6 +74,7 @@
 
 .button {
     display: inline-block;
+    background: black;
     padding: 0 1.5rem;
     border: 2px solid gold;
     border-radius: 5px;

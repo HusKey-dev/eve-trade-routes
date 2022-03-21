@@ -1,14 +1,28 @@
 .ResultList {
     display: flex;
     flex-direction: column;
+    font-size: 0.9rem;
     row-gap: 10px;
     margin-top: 10px;
     max-width: 711px;
+    perspective: -40px;
 
     .card {
         background: hsla(0, 0, 0, 0.4);
         padding: 0.5rem 0.8rem;
         border-radius: 15px;
+
+        .no-result {
+            height: 10rem;
+            display: grid;
+            place-items: center;
+            font-size: 1.2rem;
+            color: gold;
+        }
+
+        .card__data {
+            color: hsla(51, 100%, 50%, 0.884);
+        }
     }
 
     .card_appear {
@@ -27,14 +41,20 @@
     }
 
     .highsec {
-        color: green;
+        color: hsl(145, 100%, 50%);
     }
 
     .lowsec {
-        color: rgb(255, 110, 58);
+        color: hsl(16, 100%, 61%);
     }
 
     .nulsec {
-        color: rgb(204, 0, 0);
+        color: hsl(0, 100%, 50%);
+    }
+}
+
+@media screen and (max-width: 330px) {
+    .ResultList {
+        font-size: 0.8rem;
     }
 }

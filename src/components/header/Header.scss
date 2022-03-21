@@ -1,38 +1,82 @@
 .Header {
-    background-color: hsla(0, 0%, 100%, 0.05);
-    flex: 0 0 auto;
+    position: sticky;
+    top: 0px;
+    z-index: 10;
 
+    nav {
+        height: auto;
+        // height: 100% !important;
+    }
+
+    .Header_wrapper {
+        height: 100%;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        z-index: 10;
+
+        &::before {
+            content: "";
+            z-index: -1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100%;
+            background: url("../../images/background.jpg") fixed no-repeat
+                center center/cover;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: hsla(0, 0%, 100%, 0.05);
+        }
+    }
     ul {
+        height: 100%;
         list-style: none;
         display: flex;
         flex-direction: row;
+        align-items: center;
+
+        .division-line {
+            flex-shrink: 0;
+            width: 1px;
+            height: 35px;
+            max-height: 50%;
+            background-color: blanchedalmond;
+        }
     }
 
     ul li {
         padding: 7px 15px;
-        border-left: 2px solid grey;
         text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
-
-        &:first-of-type {
-            border-left: none;
-        }
     }
 
     a {
         font-size: 1.2rem;
         text-decoration: none;
         color: hsl(51, 98%, 55%);
+
+        &:hover {
+            text-shadow: 0 0 10px gold;
+        }
     }
 
     .container {
         max-width: 1500px;
         margin: 0 auto;
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        // align-items: center;
         justify-content: space-between;
     }
 
@@ -41,12 +85,54 @@
         max-height: 20px;
     } */
 
-    .logo-container a {
-        display: block;
-        line-height: 0;
+    .logo-container {
+        background-color: hsl(51, 100%, 65%);
+        box-shadow: 0 0 10px gold;
+        a {
+            display: block;
+            line-height: 0;
+        }
     }
 
     .logo-container a img {
         width: 100px;
+    }
+}
+
+@media screen and (max-width: 410px) {
+    .Header {
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            nav {
+                padding: 10px 0;
+                ul {
+                    flex-direction: column;
+
+                    .division-line {
+                        height: 1px;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 411px) and (max-width: 510px) {
+    .Header {
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 0 0 auto;
+
+            nav ul li {
+                padding: 0 15px;
+                margin: 7px 0;
+            }
+        }
     }
 }
