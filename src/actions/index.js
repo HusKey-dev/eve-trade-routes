@@ -100,42 +100,6 @@ export const calculateRoutes = () => async (dispatch, getState) => {
     try {
         console.log("calculate routes runned up");
 
-        // console.log(sysList);
-        // saveFile(await fetchTypeIds(), "systems");
-        // let sysList = require("./systemids.json");
-        // let systems = {};
-        // let count = 1;
-        // let numberOfSystems = sysList.length;
-        // for (let id of sysList) {
-        //     // console.log("parsing id ", id);
-        //     console.log(`fetching system ${count} of ${numberOfSystems}`);
-        //     systems = { ...systems, ...(await fetchSysInfo(id)) };
-        //     count++;
-        // }
-        // saveFile(systems, "sysData");
-
-        // console.log("systems: ", sysList);
-        // let typeIds = await fetchListIds();
-        // console.log(typeIds);
-        // const idsLength = typeIds.length;
-        // let iteration = 1;
-        // let typeIdsData = {};
-        // for (let id of typeIds) {
-        //     console.log(`fetching commmodity ${iteration} of ${idsLength}`);
-        //     let commodity = await fetchCommodity(id);
-        //     if (commodity.published && commodity.packagedVolume) {
-        //         typeIdsData = {
-        //             ...typeIdsData,
-        //             [id]: {
-        //                 name: commodity.name,
-        //                 packagedVolume: commodity.packagedVolume,
-        //             },
-        //         };
-        //     }
-        //     iteration++;
-        // }
-        // saveFile(typeIdsData, "typeidsdata");
-
         await dispatch(validateGeneralOptions());
         if (
             getState().placeParams.startingOptions?.isValid &&

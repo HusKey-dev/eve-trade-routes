@@ -12,17 +12,7 @@ export const retry = async (asFunc, trys = 10, delay = 1000) => {
             }, millSeconds);
         });
     };
-    // try {
-    //     let res = asFunc();
 
-    //     // console.log("res is", res);
-    //     return await res;
-    // } catch (err) {
-    //     if (trys === 1) return Promise.reject(err);
-    //     console.log(`retrying...`);
-    //     await waitFor(delay);
-    //     return await retry(asFunc, trys - 1);
-    // }
     for (let i = 0; i <= trys; i++) {
         try {
             if (i >= 1) {
@@ -141,7 +131,7 @@ export const fetchTypeIds = async () => {
     );
     return res.data;
 };
-// saveSystemToLocalStorage(1, 1);
+
 export const fetchListIds = async () => {
     let res = await retry(() =>
         axios.get(`https://esi.evetech.net/latest/universe/types/`, {
