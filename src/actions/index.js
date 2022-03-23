@@ -28,7 +28,6 @@ import createId from "./createId";
 const typeIdsData = require("./typeidsdata.json");
 
 export const saveOptions = (type, state) => {
-    console.log("save options triggered with state=", state, "type= ", type);
     return {
         type,
         payload: { data: state.data, system: state.system },
@@ -157,7 +156,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
 
             const createFormatIds = async (params) => {
                 let placeIds = { regions: [], systems: [] };
-                console.log(params);
+
                 for (let id of params.data) {
                     if (hubIds.includes(id)) {
                         placeIds.systems.push(id);
