@@ -8,8 +8,6 @@ import TradeRoutes from "./tradeRoutes/TradeRoutes";
 import Contacts from "./contacts/Contacts";
 import Footer from "./footer/Footer";
 import Modal from "./modal/Modal";
-import SearchingModal from "./SearchingModal/SearchingModal";
-import ErrorModal from "./ErrorModal/ErrorModal";
 
 import "./App.scss";
 

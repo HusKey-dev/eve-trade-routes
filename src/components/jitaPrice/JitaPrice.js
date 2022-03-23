@@ -16,7 +16,6 @@ function JitaPrice(props) {
         if (!userInput.trim()) {
             setIsSearched(false);
         } else {
-            console.log("userInput is", userInput);
             setIsSearched(true);
             props.checkPrice(userInput);
         }

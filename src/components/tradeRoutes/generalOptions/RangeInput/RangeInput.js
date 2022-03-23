@@ -16,7 +16,6 @@ export const RangeInput = ({
         for (let i = 0; i <= (max - min) / step; i++) {
             allValues.push(min + i * step);
         }
-        console.log("allValues=", allValues);
         return allValues.map((value) => {
             const currentMargin = `${((value - min) / (max - min)) * 100}%`;
             const currentColor = options[value]

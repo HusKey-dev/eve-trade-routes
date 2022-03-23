@@ -24,11 +24,7 @@ class GeneralOptions extends Component {
         };
     }
 
-    componentDidUpdate() {
-        console.log(this.state);
-    }
     componentDidMount() {
-        console.log("mounted with state =", this.state);
         if (sessionStorage.getItem("GeneralOptions")) {
             this.setState(JSON.parse(sessionStorage.getItem("GeneralOptions")));
         }
@@ -46,7 +42,6 @@ class GeneralOptions extends Component {
 
     onChangeHandler = (e) => {
         let input = e.target.value;
-        console.log(input);
         if (input === "") this.setState({ ...this.state, [e.target.id]: 0 });
         if (e.target.type === "number") {
             input = parseInt(input);
@@ -90,8 +85,6 @@ class GeneralOptions extends Component {
         if (isNaN(+value)) {
             this.setState(this.state);
         } else {
-            console.log(value, id);
-            console.log({ ...this.state, [id]: +value });
             this.setState({ ...this.state, [id]: +value });
         }
     };

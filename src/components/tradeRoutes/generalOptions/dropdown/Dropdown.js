@@ -39,8 +39,6 @@ class Dropdown extends React.Component {
     }
 
     componentWillUnmount() {
-        console.log("unmount worked");
-        console.log(this.props.id, this.state);
         sessionStorage.setItem(
             `Dropdown ${this.props.id}`,
             JSON.stringify(this.state)
@@ -60,8 +58,6 @@ class Dropdown extends React.Component {
     };
 
     handleAnimationEnd = (e) => {
-        console.log("animation ended!!!!");
-        console.log(e);
         if (this.container.current && this.state.animateUnmount) {
             this.setState({
                 ...this.state,
@@ -86,7 +82,6 @@ class Dropdown extends React.Component {
         }
 
         const onChangeHandler = (e) => {
-            console.log(e.target);
             if (e.target.checked) {
                 this.setState({
                     ...this.state,

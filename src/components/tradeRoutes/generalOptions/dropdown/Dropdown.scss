@@ -2,11 +2,10 @@
     outline: 2px solid gold;
     border-radius: 10px;
     max-width: max-content;
-    // padding: 1rem;
+
     overflow: hidden;
     background: hsla(0, 0, 0, 0.4);
-    opacity: 100%;
-    // flex-wrap: nowrap;
+    opacity: 1;
 
     & > div {
         padding: 1rem;
@@ -139,7 +138,7 @@
         }
 
         to {
-            opacity: 100%;
+            opacity: 1;
         }
     }
 }

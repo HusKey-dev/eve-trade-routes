@@ -1,6 +1,5 @@
 import React from "react";
 import "./main.scss";
-import DownloadUpdatedIds from "../dev/DownloadUpdatedIds";
 
 function Main() {
     return (
