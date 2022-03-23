@@ -27,7 +27,6 @@ function Main() {
                 CCP services are a little bit buggy, and sometimes may provide
                 incorrect results. Use it at your own risk.
             </p>
-            <DownloadUpdatedIds />
         </div>
     );
 }
