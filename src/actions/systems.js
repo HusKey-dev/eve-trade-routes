@@ -171,8 +171,10 @@ export const fetchListIds = async () => {
 };
 
 export const fetchCommodity = async (id) => {
-    let res = await retry(() =>
-        axios.get(`https://esi.evetech.net/latest/universe/types/${id}`)
+    let res = await retry(
+        () => axios.get(`https://esi.evetech.net/latest/universe/types/${id}`),
+        20,
+        2000
     );
     let { name, packaged_volume: packagedVolume, published } = res.data;
     return { name, packagedVolume, published };

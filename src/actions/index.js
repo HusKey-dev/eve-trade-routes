@@ -768,6 +768,6 @@ export const calculateRoutes = () => async (dispatch, getState) => {
             console.log("if statement returned false", getState().placeParams);
         }
     } catch {
-        return dispatch({ type: "TOGGLE_ERROR" });
+        return dispatch(toggleError());
     }
 };
