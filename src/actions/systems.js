@@ -2,7 +2,6 @@ import axios from "axios";
 
 import { hubs } from "../components/tradeRoutes/generalOptions/dropdown/regions";
 
-let sysListJson = require("./sysData.json");
 export const sysList = require("./sysData.json");
 
 export const retry = async (asFunc, trys = 10, delay = 1000) => {
