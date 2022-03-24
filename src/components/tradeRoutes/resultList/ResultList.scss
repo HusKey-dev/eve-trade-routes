@@ -8,7 +8,7 @@
     perspective: -40px;
 
     .card {
-        background: hsla(0, 0, 0, 0.4);
+        background: hsla(0, 0%, 0%, 40%);
         padding: 0.5rem 0.8rem;
         border-radius: 15px;
 
@@ -21,7 +21,7 @@
         }
 
         .card__data {
-            color: hsla(51, 100%, 50%, 0.884);
+            color: hsl(51, 100%, 50%);
         }
     }
 
