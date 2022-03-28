@@ -27,7 +27,7 @@ const fetchTypeId = async (userInput) => {
     );
 
     const id = resolve.data.inventory_types?.[0].id;
-    return id;
+    return id === undefined ? null : id;
 };
 
 const fetchJitaPrice = async (id) => {
