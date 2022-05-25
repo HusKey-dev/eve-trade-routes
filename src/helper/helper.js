@@ -34,3 +34,26 @@ export const parallelByCount = async (
     }
     return result;
 };
+
+export const formatPositiveNumberToStringBy3 = (number) => {
+    const formatCharsBy3 = (chars) => {
+        let result = "";
+        for (let i = 0; i < chars.length; i++) {
+            if (i && i % 3 === 0) result += " ";
+            result += chars[i];
+        }
+        return result;
+    };
+    const formatPositiveIntegerToStringBy3 = (integer) => {
+        const chars = integer.toString().split("").reverse();
+        return formatCharsBy3(chars).split("").reverse().join("");
+    };
+
+    const str = number.toString();
+    let [whole, fraction] = str.split(".");
+    let result = formatPositiveIntegerToStringBy3(+whole);
+    if (fraction) {
+        result += `.${formatCharsBy3(fraction)}`;
+    }
+    return result;
+};

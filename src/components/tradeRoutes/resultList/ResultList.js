@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { formatPositiveNumberToStringBy3 } from "../../../helper/helper";
 import "./ResultList.scss";
 
 export class ResultList extends Component {
@@ -44,33 +45,47 @@ export class ResultList extends Component {
                     <p>
                         jumps: <span className="card__data">{item.jumps}</span>
                     </p>
+                    <br />
                     <p>
                         profit:{" "}
                         <span className="card__data">
-                            {item.profit} mil isk
+                            {formatPositiveNumberToStringBy3(item.profit)} mil
+                            isk
                         </span>
                     </p>
                     <p>
                         profit per jump:{" "}
                         <span className="card__data">
-                            {item.profitPerJump} mil isk
+                            {formatPositiveNumberToStringBy3(
+                                item.profitPerJump
+                            )}{" "}
+                            mil isk
                         </span>
                     </p>
+                    <br />
                     <p>
                         commodity:{" "}
                         <span className="card__data">{item.commodity}</span>
                     </p>
                     <p>
                         quantity:{" "}
-                        <span className="card__data">{item.quantity}</span>
+                        <span className="card__data">
+                            {formatPositiveNumberToStringBy3(item.quantity)}
+                        </span>
                     </p>
+                    <br />
                     <p>
                         you buy:{" "}
-                        <span className="card__data">{item.buyPrice} isk</span>
+                        <span className="card__data">
+                            {formatPositiveNumberToStringBy3(item.buyPrice)} isk
+                        </span>
                     </p>
                     <p>
                         you sell:{" "}
-                        <span className="card__data">{item.sellPrice} isk</span>
+                        <span className="card__data">
+                            {formatPositiveNumberToStringBy3(item.sellPrice)}{" "}
+                            isk
+                        </span>
                     </p>
                 </div>
             </CSSTransition>

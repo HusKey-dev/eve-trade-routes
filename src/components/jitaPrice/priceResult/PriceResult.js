@@ -1,27 +1,16 @@
 import React from "react";
+import { formatPositiveNumberToStringBy3 } from "../../../helper/helper";
 
 function PriceResult(props) {
-    const formatPrice = (price) => {
-        const strValue = price?.toString();
-
-        let result = "";
-
-        for (let i = 0; i < strValue.length; i++) {
-            result += strValue[i];
-            if (!((strValue.length - i - 1) % 3) && strValue.length - i > -1) {
-                result += " ";
-            }
-        }
-
-        return result;
-    };
-
     const order = (item) => {
         if (props.orders[item]) {
             return (
                 <tr key={item}>
                     <th>{item}</th>
-                    <td>{formatPrice(props.orders[item])} ISK</td>
+                    <td>
+                        {formatPositiveNumberToStringBy3(props.orders[item])}{" "}
+                        ISK
+                    </td>
                 </tr>
             );
         }
