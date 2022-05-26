@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { formatPositiveNumberToStringBy3 } from "../../../helper/helper";
+import CopyButton from "../copyButton/CopyButton";
 import "./ResultList.scss";
 
 export class ResultList extends Component {
@@ -33,6 +34,7 @@ export class ResultList extends Component {
                         >
                             {item.startsystem}
                         </span>
+                        <CopyButton buffer={item.startsystem} />
                     </p>
                     <p>
                         to:{" "}
@@ -41,6 +43,7 @@ export class ResultList extends Component {
                         >
                             {item.endsystem}
                         </span>
+                        <CopyButton buffer={item.endsystem} />
                     </p>
                     <p>
                         jumps: <span className="card__data">{item.jumps}</span>
@@ -66,6 +69,7 @@ export class ResultList extends Component {
                     <p>
                         commodity:{" "}
                         <span className="card__data">{item.commodity}</span>
+                        <CopyButton buffer={item.commodity} />
                     </p>
                     <p>
                         quantity:{" "}

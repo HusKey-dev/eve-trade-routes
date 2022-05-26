@@ -5,12 +5,14 @@
     row-gap: 10px;
     margin-top: 10px;
     max-width: 711px;
-    perspective: -40px;
+    // perspective: 20px;
 
     .card {
         background: rgba(0, 0, 0, 0.4);
         padding: 0.5rem 0.8rem;
         border-radius: 15px;
+        transform-style: preserve-3d;
+        perspective: 50px;
 
         .no-result {
             height: 10rem;
@@ -22,6 +24,13 @@
 
         .card__data {
             color: hsl(51, 100%, 50%);
+        }
+
+        &:hover {
+            .CopyButton {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     }
 
