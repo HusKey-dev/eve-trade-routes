@@ -299,7 +299,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
 				// TODO: take these params from user
 				const maxCargo = params.maxCargo || 60000;
 				const minProfit = 10000000;
-				const taxRate = 0.051;
+				const taxRate = 0.036;
 				const maxWallet = params.maxWallet || 500000000;
 
 				const routes = [];
@@ -661,7 +661,7 @@ export const calculateRoutes = () => async (dispatch, getState) => {
 				)
 			).filter((el) => el.jumps <= tripParams.maxRange);
 
-			// routesWithJumps.sort((a, b) => b.profitPerJump - a.profitPerJump);
+			routesWithJumps.sort((a, b) => b.profit - a.profit);
 			for (let i = 0; i < routesWithJumps.length; i++) {
 				routesWithJumps[i].id = createId();
 			}
